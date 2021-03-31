@@ -1,12 +1,19 @@
+import numpy as np
 
 
 def print_hi(name):
+    text = 'Hi, %s!' % name
 
-    print('Hi, {name}')
-    print(1+1)
+    return text
+
+
+def avg_calc(*args):
+    stat = (sum(list(args)))/len(list(args))
+
+    return stat
 
 
 if __name__ == '__main__':
-    print_hi('Hello World!')
-
+    print(print_hi('Alice'))
+    print(avg_calc(7, 8, 6))
 

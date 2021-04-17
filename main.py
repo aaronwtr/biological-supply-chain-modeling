@@ -37,5 +37,24 @@ Dpr = Dp  / Drate
 h = eta * Kb / Drate
 Theta  = beta * kl * n0 * eta * Kb / Drate**2
 
+#------------------Simulation Variables---------------------
+
+N = 100 ; M = 100 #discretisaion in X (N) and Y (M)
+# parameters for bacteria, infected bacteria and phages
+b = np.zeros((N,M,3)) ; l = np.zeros((N,M)) ; p = np.zeros((N,M))
+dt = 10**(-3) ; dtau = dt * Drate #time step and scaling
+
+
+
+
+
+#F = np.divide(p,b+l+Kb)
+
+
+
+
+
+
+
 
 

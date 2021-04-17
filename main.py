@@ -6,6 +6,9 @@ um_to_m = 10**(-6)
 cm_to_m = 10**(-3)
 h_to_s  = 3600
 
+
+#--------------parameters---------------------- 
+
 DBmax   = 5.25 * 10**5 * um_to_m**2 /h_to_s   # um^2/h to m^2/s
 Kv      = .001 * (10**(-6))**(-2)             # um^-2 to m^-2
 Kc      = .02 * (10**(-6))**(-2)              # um^-2 to m^-2
@@ -24,3 +27,15 @@ P0      = 1.5 * 10**8                         #
 n0      = 1 * um_to_m**(-2)                   # um^-2 to m^-2
 r       = .25 * cm_to_m                       # cm to m
 R       = 5.5 * cm_to_m                       # cm to m
+
+#--------------Condensed constants---------------------- 
+
+Drate = DBmax * (n0/(n0 +Kv))**2
+G = gmax * n0 / (n0 + Kn) /Drate
+Omega = kl * n0 / Drate
+Dpr = Dp  / Drate
+h = eta * Kb / Drate
+Theta  = beta * kl * n0 * eta * Kb / Drate**2
+
+
+

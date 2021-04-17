@@ -1,9 +1,8 @@
 import numpy as np
 
 
-def print_hi(name, age):
+def print_hi(name):
     text = 'Hi, %s!' % name
-    Age = '%f' % age
 
     return text
 
@@ -15,7 +14,7 @@ def avg_calc(*args):
 
 
 if __name__ == '__main__':
-    print(print_hi('Alice', 22))
+    print(print_hi('Alice'))
     print(avg_calc(7, 8, 6))
 
 

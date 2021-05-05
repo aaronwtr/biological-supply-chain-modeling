@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+start = time.time()
+
 
 # This code is exclusively for a 1D simulation
 
@@ -45,18 +48,24 @@ def petri_rod(b,l,p,Vc, Vv):
     #print(dx)
     
     Steps = np.round(dur/(dt*samples))
+    Stepshalf = Steps//2
     #print(Steps)
     Dtau = Drate * dt # um^2
     #print(Dtau)
     #Steps = 1
     i = 0 
     
-    # DtauG = Dtau * G
-    # DtauDX = DX * Dtau
-    # DtauDXDpr = DtauDX * Dpr
-    # Dtauh = Dtau*h
-    # DtauTheta = Dtau*Theta
     minh = -h
+    
+    DtauG = Dtau * G
+    DtauDX = DX * Dtau
+    DtauDXDpr = DtauDX * Dpr
+    Dtauh = Dtau*h
+    Dtauminh = Dtau*minh
+    DtauOmega = Dtau*Omega
+    DtauTheta = Dtau*Theta
+    DtauminhKb = Dtauminh*Kb
+    minhKb = -h*Kb
     while i <  Steps: 
         
         # B1 = B + G - np.divide(np.exp(P),np.exp(B)+np.exp(L)+Kb) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))/(4*dx**2)
@@ -67,13 +76,6 @@ def petri_rod(b,l,p,Vc, Vv):
         # L1 = L + np.exp(B-L)*F - Omega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))/(4*dx**2)
         # P1 = P - np.divide((np.exp(B)+np.exp(L))*h,np.exp(B)+np.exp(L)+Kb) + np.exp(L-P) * Theta + Dpr * np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))/(4*dx**2)
         
-        LminP = L - P
-        B1 = B + Dtau *(G - np.divide(1,np.exp(B-P)+np.exp(LminP)+Kb/np.exp(P)) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DX )
-        L1 = L + Dtau * (np.divide(1,np.exp(LminP)+np.exp(L-B+LminP)+Kb/np.exp(B-LminP)) - Omega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DX )
-        P = P + Dtau *(np.divide(minh,1+Kb/((np.exp(B)+np.exp(L)))) + np.exp(LminP) * Theta + Dpr * np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DX )
-        
-        
-        
         
         # LminP = L - P
         # B1 = B +  DtauG - np.divide(Dtau,np.exp(B-P)+np.exp(LminP)+Kb/np.exp(P)) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DtauDX 
@@ -82,12 +84,48 @@ def petri_rod(b,l,p,Vc, Vv):
         
         
         
+        # LminP = L - P
+        # B1 = B + Dtau *(G - np.divide(1,np.exp(B-P)+np.exp(LminP)+Kb/np.exp(P)) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DX )
+        # L1 = L + Dtau * (np.divide(1,np.exp(LminP)+np.exp(L-B+LminP)+Kb/np.exp(B-LminP)) - Omega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DX )
+        # P = P + Dtau *(np.divide(minh,1+Kb/((np.exp(B)+np.exp(L)))) + np.exp(LminP) * Theta + Dpr * np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DX )
+        
+        # B = B1
+        # L = L1
+        
+        # LminP = L - P
+        # B1 = B +  DtauG - np.divide(Dtau,np.exp(B-P)+np.exp(LminP)+Kb/np.exp(P)) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DtauDX 
+        # L1 = L +  np.divide(Dtau,np.exp(LminP)+np.exp(L-B+LminP)+Kb/np.exp(B-LminP)) - DtauOmega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DtauDX 
+        # P  = P + np.divide(Dtauminh,1+Kb/((np.exp(B)+np.exp(L)))) + np.exp(LminP) * DtauTheta +  np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DtauDXDpr 
+       
+        
+        # B = B1
+        # L = L1
+        
+        # LminP = L - P
+        # B1 = B +  DtauG - np.divide(Dtau,np.exp(B-P)+np.exp(LminP)+Kb*np.exp(-P)) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DtauDX 
+        # L1 = L +  np.divide(Dtau,np.exp(LminP)+np.exp(L-B+LminP)+Kb*np.exp(LminP-B)) - DtauOmega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DtauDX 
+        # P += np.divide(Dtauminh,1+Kb/((np.exp(B)+np.exp(L)))) + np.exp(LminP) * DtauTheta +  np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DtauDXDpr 
+       
+        
+        # B = B1
+        # L = L1
+        
+        
+        #LminP = L - P
+        Dtau_over_ExpBplusExpLplusKb = Dtau/(np.exp(B)+np.exp(L)+Kb)
+        
+        B1 = B +  DtauG - np.exp(P)*Dtau_over_ExpBplusExpLplusKb + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DtauDX 
+        L1 = L +  np.exp(P+B-L)*Dtau_over_ExpBplusExpLplusKb - DtauOmega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DtauDX 
+        P += Dtauminh-minhKb*Dtau_over_ExpBplusExpLplusKb + np.exp(L - P) * DtauTheta +  np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DtauDXDpr 
+       
+        
         B = B1
         L = L1
         
-        B = np.where(B < b_min, b_min, B)
-        L = np.where(L < l_min, l_min, L)
-        P = np.where(P < p_min, p_min, P)
+        
+        # B = np.where(B < b_min, b_min, B)
+        # L = np.where(L < l_min, l_min, L)
+        # P = np.where(P < p_min, p_min, P)
 
         
         i += 1
@@ -200,7 +238,7 @@ print(p*P_0/h)
 
 #F = np.divide(p,b+l+Kb)
 
-
+print(time.time() - start)
 
 
 

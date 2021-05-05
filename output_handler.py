@@ -28,9 +28,14 @@ def save_results(Bresults, Lresults, Presults):
 def read_file(fileName):
     fileObj = open(fileName, "r")  # opens the file in read mode
     words = fileObj.read().splitlines()  # puts the file into an array
-    fileObj.close()
 
-    array_temp = read_file("results/bacteria_sim_results.txt")
+    f_array = process_array(words)
+
+    return f_array
+
+
+def process_array(words):
+    array_temp = words
 
     array = []
     for i in range(len(array_temp)):
@@ -38,5 +43,3 @@ def read_file(fileName):
         array.append(array_tempp.split(","))
 
     return array
-
-

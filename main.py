@@ -66,6 +66,12 @@ def petri_rod(b,l,p,Vc, Vv):
     DtauTheta = Dtau*Theta
     DtauminhKb = Dtauminh*Kb
     minhKb = -h*Kb
+    
+    Q = np.zeros((3,N))
+    
+    Q[0,:] = B
+    Q[1,:] = L
+    Q[2,:] = P
     while i <  Steps: 
         
         # B1 = B + G - np.divide(np.exp(P),np.exp(B)+np.exp(L)+Kb) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))/(4*dx**2)
@@ -112,15 +118,38 @@ def petri_rod(b,l,p,Vc, Vv):
         
         
         #LminP = L - P
-        Dtau_over_ExpBplusExpLplusKb = Dtau/(np.exp(B)+np.exp(L)+Kb)
+        # Dtau_over_ExpB_plus_ExpL_plus_Kb = Dtau/(np.exp(B)+np.exp(L)+Kb)
         
-        B1 = B +  DtauG - np.exp(P)*Dtau_over_ExpBplusExpLplusKb + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DtauDX 
-        L1 = L +  np.exp(P+B-L)*Dtau_over_ExpBplusExpLplusKb - DtauOmega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DtauDX 
-        P += Dtauminh-minhKb*Dtau_over_ExpBplusExpLplusKb + np.exp(L - P) * DtauTheta +  np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DtauDXDpr 
+        # B1 = B +  DtauG - np.exp(P)*Dtau_over_ExpB_plus_ExpL_plus_Kb + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DtauDX 
+        # L1 = L +  np.exp(P+B-L)*Dtau_over_ExpB_plus_ExpL_plus_Kb - DtauOmega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DtauDX 
+        # P += Dtauminh-minhKb*Dtau_over_ExpB_plus_ExpL_plus_Kb + np.exp(L - P) * DtauTheta +  np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DtauDXDpr 
        
         
-        B = B1
-        L = L1
+        # B = B1
+        # L = L1
+        
+        #B = Q[0,:]
+        #L = Q[1,:]
+        #P = Q[2,:]
+        
+        Dtau_over_ExpB_plus_ExpL_plus_Kb = Dtau/(np.exp(Q[0,:])+np.exp(Q[1,:])+Kb)
+        
+        operator = np.column_stack(((Q[:,1]-Q[:,0]+2)**2-4,((Q[:,2:N] - Q[:,0:N-2] + 2)**2 + 8*(Q[:,0:N-2] -  Q[:,1:N-1]) -4),(Q[:,N-2]-Q[:,N-1]+2)**2-4))*DtauDX 
+        
+        B1 = Q[0,:] +  DtauG - np.exp(Q[2,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb + operator[0,:]
+        L1 = Q[1,:] +  np.exp(Q[2,:]+Q[0,:]-Q[1,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb - DtauOmega + operator[1,:]
+        #newQ = np.stack((Q[0,:] +  DtauG - np.exp(Q[2,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb,Q[1,:] +  np.exp(Q[2,:]+Q[0,:]-Q[1,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb))+operator[:2,:]
+        Q[2,:] += Dtauminh-minhKb*Dtau_over_ExpB_plus_ExpL_plus_Kb + np.exp(Q[1,:] - Q[2,:]) * DtauTheta +  operator[2,:]*Dpr 
+        
+        #Q[:2,:]= newQ
+        Q[0,:] = B1
+        Q[1,:] = L1
+        
+       
+        #print(np.shape(np.stack((Q[0,:] +  DtauG - np.exp(Q[2,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb,Q[1,:] +  np.exp(Q[2,:]+Q[0,:]-Q[1,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb))+operator[:2,:]))
+        #print(np.shape(Q[2,:]+Dtauminh-minhKb*Dtau_over_ExpB_plus_ExpL_plus_Kb + np.exp(Q[1,:] - Q[2,:]) * DtauTheta +  operator[2,:]*Dpr ))
+        #Q = np.row_stack((np.stack((Q[0,:] +  DtauG - np.exp(Q[2,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb,Q[1,:] +  np.exp(Q[2,:]+Q[0,:]-Q[1,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb))+operator[:2,:],Q[2,:]+Dtauminh-minhKb*Dtau_over_ExpB_plus_ExpL_plus_Kb + np.exp(Q[1,:] - Q[2,:]) * DtauTheta +  operator[2,:]*Dpr ))
+
         
         
         # B = np.where(B < b_min, b_min, B)
@@ -132,8 +161,8 @@ def petri_rod(b,l,p,Vc, Vv):
     
     
     
-    
-    return np.exp(B) , np.exp(L) , np.exp(P)
+    return np.exp(Q[0,:]) , np.exp(Q[1,:]) , np.exp(Q[2,:])
+    #return np.exp(B) , np.exp(L) , np.exp(P)
 
 
 

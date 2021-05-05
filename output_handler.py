@@ -40,6 +40,8 @@ def process_array(words):
     array = []
     for i in range(len(array_temp)):
         array_tempp = str(array_temp[i])[:-1]
-        array.append(array_tempp.split(","))
+        array_string = array_tempp.split(",")
+        array_float = [float(num) for num in array_string]
+        array.append(array_float)
 
     return array

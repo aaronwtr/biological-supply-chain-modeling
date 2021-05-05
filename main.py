@@ -56,7 +56,7 @@ def petri_rod(b,l,p,Vc, Vv):
     # DtauDXDpr = DtauDX * Dpr
     # Dtauh = Dtau*h
     # DtauTheta = Dtau*Theta
-    
+    minh = -h
     while i <  Steps: 
         
         # B1 = B + G - np.divide(np.exp(P),np.exp(B)+np.exp(L)+Kb) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))/(4*dx**2)
@@ -70,7 +70,7 @@ def petri_rod(b,l,p,Vc, Vv):
         LminP = L - P
         B1 = B + Dtau *(G - np.divide(1,np.exp(B-P)+np.exp(LminP)+Kb/np.exp(P)) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))*DX )
         L1 = L + Dtau * (np.divide(1,np.exp(LminP)+np.exp(L-B+LminP)+Kb/np.exp(B-LminP)) - Omega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))*DX )
-        P = P - Dtau *(np.divide(h,1+Kb/((np.exp(B)+np.exp(L)))) + np.exp(LminP) * Theta + Dpr * np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DX )
+        P = P + Dtau *(np.divide(minh,1+Kb/((np.exp(B)+np.exp(L)))) + np.exp(LminP) * Theta + Dpr * np.concatenate(([((P[1]-P[0]+2)**2-4)],((P[2:N] - P[0:N-2] + 2)**2 + 8*(P[0:N-2] -  P[1:N-1]) -4),[((P[N-2]-P[N-1]+2)**2-4)]))*DX )
         
         
         

@@ -1,6 +1,6 @@
 import numpy as np
 
-def save_results():
+def save_results(Bresults, Lresults, Presults):
     with open("results/bacteria_sim_results.txt", 'w') as output:
         for i in range(len(Bresults)):
             for j in range(len(Bresults[i])):

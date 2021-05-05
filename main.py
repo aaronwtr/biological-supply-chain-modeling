@@ -215,7 +215,7 @@ for i in range(samples):
 
 sr = False
 if sr:
-    oh.save_results()
+    oh.save_results(Bresults, Lresults, Presults)
 
 fig, axs = plt.subplots(3)
 fig.suptitle('results over time')

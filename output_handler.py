@@ -29,11 +29,14 @@ def read_file(fileName):
     fileObj = open(fileName, "r")  # opens the file in read mode
     words = fileObj.read().splitlines()  # puts the file into an array
     fileObj.close()
-    return words
 
-array_temp = read_file("results/bacteria_sim_results.txt")
+    array_temp = read_file("results/bacteria_sim_results.txt")
 
-array = []
-for i in range(len(array_temp)):
-    array_tempp = str(array_temp[i])[:-1]
-    array.append(array_tempp.split(","))
+    array = []
+    for i in range(len(array_temp)):
+        array_tempp = str(array_temp[i])[:-1]
+        array.append(array_tempp.split(","))
+
+    return array
+
+

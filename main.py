@@ -1,14 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-start = time.time()
 import output_handler as oh
 
 
 # This code is exclusively for a 1D simulation
 
 
-
+start = time.time()
 
 def petri_rod(b,l,p,Vc, Vv):
     

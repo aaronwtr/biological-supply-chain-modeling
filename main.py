@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-start = time.time()
+import output_handler as oh
 
 
 # This code is exclusively for a 1D simulation
 
 
-
+start = time.time()
 
 def petri_rod(b,l,p,Vc, Vv):
     
@@ -238,12 +238,13 @@ Vv = [N,dt,dur, b_min, l_min, p_min]
 
 Bresults[:,0] , Lresults[:,0]  , Presults[:,0]  = B , L , P
 
-
 for i in range(samples):
-    b,l,p = petri_rod(b,l,p,Vc, Vv)
-    Bresults[:,i+1] , Lresults[:,i+1]  , Presults[:,i+1]  = b*B_0 , l*L_0 , p*P_0/h
+    b, l, p = petri_rod(b, l, p, Vc, Vv)
+    Bresults[:, i + 1], Lresults[:, i + 1], Presults[:, i + 1] = b * B_0, l * L_0, p * P_0 / h
 
-
+sr = False
+if sr:
+    oh.save_results(Bresults, Lresults, Presults)
 
 fig, axs = plt.subplots(3)
 fig.suptitle('results over time')
@@ -260,18 +261,11 @@ axs[2].set(xlabel='Time', ylabel='Distance')
 #fig.colorbar()
 plt.show()
 
-print('the end results')
-print(b*B_0)
-print(l*L_0)
-print(p*P_0/h)
+# print('the end results')
+# print(b*B_0)
+# print(l*L_0)
+# print(p*P_0/h)
 
 #F = np.divide(p,b+l+Kb)
 
 print(time.time() - start)
-
-
-
-
-
-
-

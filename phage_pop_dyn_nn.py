@@ -8,18 +8,21 @@ import deepxde as dde
 from deepxde.backend import tf
 
 def main():
-    def pde(x, t, y):
-        b, l, p = y[:, 1:], y[:, 1:], y[:, 1:]
+    def pde(x, y):
+        b = 100     # initial number of bacteria
+        p = 10      # initial number of phages
+        l = 0       # initial number of infected bacteria
+
         T = b + l
         F = p / (T + Kb)
 
-        db_tau = dde.grad.jacobian(y, t, i=0)
-        dl_tau = dde.grad.jacobian(y, t, i=0)
-        dp_tau = dde.grad.jacobian(y, t, i=0)
-        db_xx = dde.grad.hessian(y, x, i=0)
-        dl_xx = dde.grad.hessian(y, x, i=0)
-        dp_xx = dde.grad.hessian(y, x, i=0)
-        return ([db_tau - (db_xx + (G - F*b)),
+        db_tau = dde.grad.jacobian(y, x, i=0, j=1)
+        dl_tau = dde.grad.jacobian(y, x, i=0, j=1)
+        dp_tau = dde.grad.jacobian(y, x, i=0, j=1)
+        db_xx = dde.grad.hessian(y, x, i=0, j=0)
+        dl_xx = dde.grad.hessian(y, x, i=0, j=0)
+        dp_xx = dde.grad.hessian(y, x, i=0, j=0)
+        return ([db_tau - (db_xx + (G - F)*b),
                  dl_tau - (dl_xx - Omega*l + b*F),
                  dp_tau - (Dpr*dp_xx - T*h*F + l*Theta)]
 

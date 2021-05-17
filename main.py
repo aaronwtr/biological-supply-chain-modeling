@@ -141,20 +141,4 @@ sr = False
 if sr:
     oh.save_results(Bresults, Lresults, Presults)
 
-fig, axs = plt.subplots(3)
-fig.suptitle('results over time')
-axs[0].imshow(np.log(Bresults), cmap='viridis')
-axs[0].set_title('Bacteria')
-axs[0].set(ylabel='Distance')
-axs[1].imshow(np.log(Lresults), cmap='viridis')
-axs[1].set_title('Infected bacteria')
-axs[1].set(ylabel='Distance')
-axs[2].imshow(np.log(Presults), cmap='viridis')
-axs[2].set_title('Phages')
-axs[2].set(xlabel='Time', ylabel='Distance')
-
-plt.show()
-
-
-
 print("The simulation took " + str(time.time() - start) + " seconds")

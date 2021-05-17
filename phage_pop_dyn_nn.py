@@ -22,12 +22,10 @@ def main():
         db_xx = dde.grad.hessian(y, x, i=0, j=0)
         dl_xx = dde.grad.hessian(y, x, i=0, j=0)
         dp_xx = dde.grad.hessian(y, x, i=0, j=0)
-        return ([db_tau - (db_xx + (G - F)*b),
-                 dl_tau - (dl_xx - Omega*l + b*F),
-                 dp_tau - (Dpr*dp_xx - T*h*F + l*Theta)]
+        return [db_tau - (db_xx + (G - F)*b),
+                dl_tau - (dl_xx - Omega*l + b*F),
+                dp_tau - (Dpr*dp_xx - T*h*F + l*Theta)]
 
-
-        )
 
     def func(x):
         return 0

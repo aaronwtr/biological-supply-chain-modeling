@@ -136,8 +136,7 @@ Q[2,:] = P
 
 Bresults, Lresults, Presults = petri_rod(Q, N, dt, dur, samples)
 
-
-sr = False
+sr = True
 if sr:
     oh.save_results(Bresults, Lresults, Presults)
 

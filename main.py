@@ -57,7 +57,7 @@ def petri_rod(Q, N, dt, dur, samples):
 
     Results = np.zeros((3,N,samples+1))
     
-    Results[:,:,0]  = q
+    Results[:,:,0]  = q[:3,:]
  
     Steps = np.round(dur/(dt*samples))
     #dx = Length_petri/N
@@ -71,13 +71,12 @@ def petri_rod(Q, N, dt, dur, samples):
     DtauOmega = Dtau*Omega
     #DtauTheta = Dtau*Theta
     logDtauTheta = np.log(Dtau*Theta)
-    
     hKb = h*Kb
     operator = np.zeros((3,N))
     
     for i in range(samples):   
         
-        for  j in range(Steps): 
+        for j in range(Steps): 
             
             # B1 = B + Dtau *(G - np.divide(np.exp(P),np.exp(B)+np.exp(L)+Kb) + np.concatenate(([((B[1]-B[0]+2)**2-4)],((B[2:N] - B[0:N-2] + 2)**2 + 8*(B[0:N-2] -  B[1:N-1]) -4),[((B[N-2]-B[N-1]+2)**2-4)]))/(4*dx**2))
             # L1 = L + Dtau *(np.exp(B-L)*np.divide(np.exp(P),np.exp(B)+np.exp(L)+Kb) - Omega + np.concatenate(([((L[1]-L[0]+2)**2-4)],((L[2:N] - L[0:N-2] + 2)**2 + 8*(L[0:N-2] -  L[1:N-1]) -4),[((L[N-2]-L[N-1]+2)**2-4)]))/(4*dx**2))
@@ -98,13 +97,14 @@ def petri_rod(Q, N, dt, dur, samples):
             #newQ = np.stack((Q[0,:] +  DtauG - np.exp(Q[2,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb,Q[1,:] +  np.exp(Q[2,:]+Q[0,:]-Q[1,:])*Dtau_over_ExpB_plus_ExpL_plus_Kb))+operator[:2,:]
             q[2,:] += -Dtauh+hKb*Dtau_over_ExpB_plus_ExpL_plus_Kb + np.exp(q[1,:] - q[2,:]+logDtauTheta)  +  operator[2,:]*DtauDXDpr 
             
-            #Q[:2,:]= newQ
             q[0,:] = b1
             q[1,:] = l1
+            
+            
+            
     
         Results[:,:, i + 1] = q
-    
-    
+        
     return B_0 * np.exp(Results[0,:,:]), L_0 * np.exp(Results[1,:,:]), P_0 * np.exp(Results[2,:,:]) / h
     #return np.exp(B) , np.exp(L) , np.exp(P)
 
@@ -132,7 +132,6 @@ Q = np.zeros((3,N))
 Q[0,:] = B
 Q[1,:] = L
 Q[2,:] = P
-
 
 Bresults, Lresults, Presults = petri_rod(Q, N, dt, dur, samples)
 

@@ -24,13 +24,13 @@ def petri_rod(Q, N, dt, dur, samples):
     #Dn      = 4.5*10**6     # um^2/h
     eta     = 8 * 10**4     # um^2/h
     beta    = 80            # 1              
-    kl      = 2#00             # um^2/h
+    kl      = 2#00          # um^2/h
     gmax    = 6             # 1/h
     Kn      =  .1           # um^-2
-    #Lambda  = .2            # 1 
+    #Lambda  = .2           # 1
     Kb      =  .1           # um^-2
-    #B0      = 10**7         # 1
-    #P0      = 1.5 * 10**8   # 1
+    #B0      = 10**7        # 1
+    #P0      = 1.5 * 10**8  # 1
     n0      = 1             # um^-2
     Length_petri = 1000     # um   
     B_0 = 1                 # um^-2
@@ -60,6 +60,7 @@ def petri_rod(Q, N, dt, dur, samples):
     Results[:,:,0]  = q[:3,:]
  
     Steps = np.round(dur/(dt*samples))
+    print(Steps)
     #dx = Length_petri/N
     #DX = 1/(4*dx**2)
     DX = 1/(4*(Length_petri/N)**2)
@@ -105,7 +106,7 @@ def petri_rod(Q, N, dt, dur, samples):
     
         Results[:,:, i + 1] = q
         
-    return B_0 * np.exp(Results[0,:,:]), L_0 * np.exp(Results[1,:,:]), P_0 * np.exp(Results[2,:,:]) / h
+    return B_0 * np.exp(Results[0,:,:]), L_0 * np.exp(Results[1,:,:]), P_0 * np.exp(Results[2,:,:]) / h,
     #return np.exp(B) , np.exp(L) , np.exp(P)
 
 
@@ -113,7 +114,7 @@ def petri_rod(Q, N, dt, dur, samples):
 
 #------------------Simulation Variables---------------------
 
-N = 10 #discretisaion in X (N)
+N = 50 #discretisaion in X (N)
 dt = 10**(-8)  #time steps in h 
 dur = .30 # duration of total simulation in h
 samples = 300 #how often one wants data to be returned
@@ -123,7 +124,8 @@ samples = 300 #how often one wants data to be returned
 # parameters for bacteria, infected bacteria and phages in # um^-2
 min_val = np.finfo(float).eps
 B = min_val*np.ones((N)) ; L = min_val*np.ones((N)) ; P = min_val*np.ones((N))
-B = np.ones((N)) ; L = np.ones((N))*10**(-6) ; P = np.ones((N))*10**(-2)
+# B = np.ones((N))*10**(-6) ; L = np.ones((N))*10**(-6) ; P = np.ones((N))*10**(-6) # **(-6) = 0
+P[-1] = 10**(-2)
 B[0] = 100
 # convert BLP to blp
 
@@ -133,9 +135,9 @@ Q[0,:] = B
 Q[1,:] = L
 Q[2,:] = P
 
-Bresults, Lresults, Presults = petri_rod(Q, N, dt, dur, samples)
+Bresults, Lresults, Presults, sample_time = petri_rod(Q, N, dt, dur, samples)
 
-sr = True
+sr = False
 if sr:
     oh.save_results(Bresults, Lresults, Presults)
 

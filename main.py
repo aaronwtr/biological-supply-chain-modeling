@@ -60,7 +60,6 @@ def petri_rod(Q, N, dt, dur, samples):
     Results[:,:,0]  = q[:3,:]
  
     Steps = np.round(dur/(dt*samples))
-    print(Steps)
     #dx = Length_petri/N
     #DX = 1/(4*dx**2)
     DX = 1/(4*(Length_petri/N)**2)
@@ -125,8 +124,8 @@ samples = 300 #how often one wants data to be returned
 min_val = np.finfo(float).eps
 B = min_val*np.ones((N)) ; L = min_val*np.ones((N)) ; P = min_val*np.ones((N))
 # B = np.ones((N))*10**(-6) ; L = np.ones((N))*10**(-6) ; P = np.ones((N))*10**(-6) # **(-6) = 0
-P[-1] = 10**(-2)
 B[0] = 100
+P[0] = 10**(-2)
 # convert BLP to blp
 
 Q = np.zeros((3,N))
@@ -135,9 +134,9 @@ Q[0,:] = B
 Q[1,:] = L
 Q[2,:] = P
 
-Bresults, Lresults, Presults, sample_time = petri_rod(Q, N, dt, dur, samples)
+Bresults, Lresults, Presults = petri_rod(Q, N, dt, dur, samples)
 
-sr = False
+sr = True
 if sr:
     oh.save_results(Bresults, Lresults, Presults)
 

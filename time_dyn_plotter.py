@@ -3,6 +3,12 @@ import output_handler as oh
 import matplotlib.pyplot as plt
 
 
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Helvetica"]})
+
+
 def one_d_time_series_plotter(results, sp_type):
     if sp_type == 'B':
         specie = 'bacteria'
@@ -43,27 +49,27 @@ one_d_time_series_plotter(Presults, 'P')
 
 # fig, axs = plt.subplots(3)
 # fig.suptitle('results over time')
-plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto')
-plt.title('Bacteria')
-plt.ylabel('Distance')
-plt.xlabel('Number of steps')
+plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# plt.title('Bacteria')
+plt.ylabel(r'Distance [$\mu$m]')
+plt.xlabel('Time [s]')
 plt.show()
+# plt.savefig('figures/bacteria_opposite_end.pdf')
 plt.clf()
-plt.imshow(np.log(Presults), cmap='viridis', aspect='auto')
-plt.title('Phages')
-plt.ylabel('Distance')
-plt.show()
-plt.clf()
-plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto')
-plt.title('Infected bacteria')
-plt.ylabel('Distance')
-plt.show()
-plt.clf()
-# axs[1].imshow(np.log(Lresults), cmap='viridis')
-# axs[1].set_title('Infected bacteria')
-# axs[1].set(ylabel='Distance')
-# axs[2].imshow(np.log(Presults), cmap='viridis')
-# axs[2].set_title('Phages')
-# axs[2].set(xlabel='Time', ylabel='Distance')
 
+plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# plt.title('Phages')
+plt.ylabel(r'Distance [$\mu$m]')
+plt.xlabel('Time [s]')
+plt.show()
+plt.savefig('figures/phages_opposite_end.pdf')
+plt.clf()
+
+plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# plt.title('Infected bacteria')
+plt.ylabel(r'Distance [$\mu$m]')
+plt.xlabel('Time [s]')
+plt.show()
+plt.savefig('figures/inf_bacteria_opposite_end.pdf')
+plt.clf()
 

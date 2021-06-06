@@ -122,8 +122,8 @@ samples = 300 #how often one wants data to be returned
 
 # parameters for bacteria, infected bacteria and phages in # um^-2
 min_val = np.finfo(float).eps
-B = min_val*np.ones((N)) ; L = min_val*np.ones((N)) ; P = min_val*np.ones((N))
-# B = np.ones((N))*10**(-6) ; L = np.ones((N))*10**(-6) ; P = np.ones((N))*10**(-6) # **(-6) = 0
+#B = min_val*np.ones((N)) ; L = min_val*np.ones((N)) ; P = 10**(-2)*np.ones((N))
+B = np.ones((N))*10**(-6) ; L = np.ones((N))*10**(-6) ; P = np.ones((N))*10**(-6) # **(-6) = 0
 B[0] = 100
 P[0] = 10**(-2)
 # convert BLP to blp

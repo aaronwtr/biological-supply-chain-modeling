@@ -1,6 +1,8 @@
 import numpy as np
 import output_handler as oh
 import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.colors import ListedColormap
 
 
 plt.rcParams.update({
@@ -38,37 +40,56 @@ def one_d_time_series_plotter(results, sp_type):
     return
 
 
+def plot_examples(cms):
+    """
+    helper function to plot two colormaps
+    """
+    np.random.seed(19680801)
+    data = np.random.randn(30, 30)
+
+    fig, axs = plt.subplots(1, 2, figsize=(6, 3), constrained_layout=True)
+    for [ax, cmap] in zip(axs, cms):
+        psm = ax.pcolormesh(data, cmap=cmap, rasterized=True, vmin=0, vmax=1)
+        fig.colorbar(psm, ax=ax)
+    plt.savefig('heatmap_label.pdf')
+
+
 Bresults = oh.read_file("results/bacteria_sim_results.txt")
 Lresults = oh.read_file("results/inf_bacteria_sim_results.txt")
 Presults = oh.read_file("results/phages_sim_run.txt")
 
-one_d_time_series_plotter(Bresults, 'B')
-one_d_time_series_plotter(Lresults, 'L')
-one_d_time_series_plotter(Presults, 'P')
+viridisBig = cm.get_cmap('viridis', 512)
+newcmp = ListedColormap(viridisBig(np.linspace(0.25, 0.75, 256)))
 
-# fig, axs = plt.subplots(3)
-# fig.suptitle('results over time')
-plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
-# plt.title('Bacteria')
-plt.ylabel(r'Distance [$\mu$m]')
-plt.xlabel('Time [s]')
-# plt.show()
-plt.savefig('figures/bacteria_same_end.pdf')
-plt.clf()
 
-plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
-# plt.title('Phages')
-plt.ylabel(r'Distance [$\mu$m]')
-plt.xlabel('Time [s]')
-# plt.show()
-plt.savefig('figures/phages_same_end.pdf')
-plt.clf()
-
-plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
-# plt.title('Infected bacteria')
-plt.ylabel(r'Distance [$\mu$m]')
-plt.xlabel('Time [s]')
-# plt.show()
-plt.savefig('figures/inf_bacteria_same_end.pdf')
-plt.clf()
+plot_examples([viridisBig, newcmp])
+# one_d_time_series_plotter(Bresults, 'B')
+# one_d_time_series_plotter(Lresults, 'L')
+# one_d_time_series_plotter(Presults, 'P')
+#
+# # fig, axs = plt.subplots(3)
+# # fig.suptitle('results over time')
+# plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# # plt.title('Bacteria')
+# plt.ylabel(r'Distance [$\mu$m]')
+# plt.xlabel('Time [s]')
+# # plt.show()
+# plt.savefig('figures/bacteria_same_end.pdf')
+# plt.clf()
+#
+# plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# # plt.title('Phages')
+# plt.ylabel(r'Distance [$\mu$m]')
+# plt.xlabel('Time [s]')
+# # plt.show()
+# plt.savefig('figures/phages_same_end.pdf')
+# plt.clf()
+#
+# plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# # plt.title('Infected bacteria')
+# plt.ylabel(r'Distance [$\mu$m]')
+# plt.xlabel('Time [s]')
+# # plt.show()
+# plt.savefig('figures/inf_bacteria_same_end.pdf')
+# plt.clf()
 

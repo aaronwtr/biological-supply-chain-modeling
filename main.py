@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-import output_handler as oh
+import utils.output_handler as oh
 from numba import njit
 
 

@@ -20,7 +20,7 @@ def petri_rod(Q, N, dt, dur, samples):
     Dp = 1  # um^2/h
     eta = 8 * 10 ** 4  # um^2/h
     beta = 80  # 1
-    kl = 0.02  # 00          # um^2/h
+    kl = 200  # 00          # um^2/h
     gmax = 6  # 1/h
     Kn = .1  # um^-2
     Kb = .1  # um^-2

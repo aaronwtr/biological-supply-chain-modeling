@@ -76,7 +76,7 @@ plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 100
 plt.ylabel(r'Distance [$\mu$m]')
 plt.xlabel('Time [s]')
 # plt.show()
-plt.savefig(str(base_path) + '/figures/bacteria_lysis_rate_low.pdf')
+plt.savefig(str(base_path) + '/figures/bacteria_lysis_rate_high.pdf')
 plt.clf()
 
 plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
@@ -84,7 +84,7 @@ plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 100
 plt.ylabel(r'Distance [$\mu$m]')
 plt.xlabel('Time [s]')
 # plt.show()
-plt.savefig(str(base_path) + '/figures/phages_lysis_rate_low.pdf')
+# plt.savefig(str(base_path) + '/figures/phages_lysis_rate_high.pdf')
 plt.clf()
 
 plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
@@ -92,6 +92,6 @@ plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 100
 plt.ylabel(r'Distance [$\mu$m]')
 plt.xlabel('Time [s]')
 # plt.show()
-plt.savefig(str(base_path) + '/figures/inf_bacteria_lysis_rate_low.pdf')
+# plt.savefig(str(base_path) + '/figures/inf_bacteria_lysis_rate_high.pdf')
 plt.clf()
 

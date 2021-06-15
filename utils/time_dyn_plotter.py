@@ -3,7 +3,9 @@ import output_handler as oh
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap
+import pathlib
 
+base_path = pathlib.PurePath(__file__).parents[1]
 
 plt.rcParams.update({
     "text.usetex": True,
@@ -53,43 +55,43 @@ def plot_examples(cms):
         fig.colorbar(psm, ax=ax)
     plt.savefig('heatmap_label.pdf')
 
-
-Bresults = oh.read_file("results/bacteria_sim_results.txt")
-Lresults = oh.read_file("results/inf_bacteria_sim_results.txt")
-Presults = oh.read_file("results/phages_sim_run.txt")
+path = ''
+Bresults = oh.read_file(str(base_path) + "/results/bacteria_sim_results.txt")
+Lresults = oh.read_file(str(base_path) + "/results/inf_bacteria_sim_results.txt")
+Presults = oh.read_file(str(base_path) + "/results/phages_sim_run.txt")
 
 viridisBig = cm.get_cmap('viridis', 512)
 newcmp = ListedColormap(viridisBig(np.linspace(0.25, 0.75, 256)))
 
 
-plot_examples([viridisBig, newcmp])
-# one_d_time_series_plotter(Bresults, 'B')
-# one_d_time_series_plotter(Lresults, 'L')
-# one_d_time_series_plotter(Presults, 'P')
-#
-# # fig, axs = plt.subplots(3)
-# # fig.suptitle('results over time')
-# plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
-# # plt.title('Bacteria')
-# plt.ylabel(r'Distance [$\mu$m]')
-# plt.xlabel('Time [s]')
-# # plt.show()
-# plt.savefig('figures/bacteria_same_end.pdf')
-# plt.clf()
-#
-# plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
-# # plt.title('Phages')
-# plt.ylabel(r'Distance [$\mu$m]')
-# plt.xlabel('Time [s]')
-# # plt.show()
-# plt.savefig('figures/phages_same_end.pdf')
-# plt.clf()
-#
-# plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
-# # plt.title('Infected bacteria')
-# plt.ylabel(r'Distance [$\mu$m]')
-# plt.xlabel('Time [s]')
-# # plt.show()
-# plt.savefig('figures/inf_bacteria_same_end.pdf')
-# plt.clf()
+# plot_examples([viridisBig, newcmp])
+one_d_time_series_plotter(Bresults, 'B')
+one_d_time_series_plotter(Lresults, 'L')
+one_d_time_series_plotter(Presults, 'P')
+
+# fig, axs = plt.subplots(3)
+# fig.suptitle('results over time')
+plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# plt.title('Bacteria')
+plt.ylabel(r'Distance [$\mu$m]')
+plt.xlabel('Time [s]')
+# plt.show()
+plt.savefig(str(base_path) + '/figures/bacteria_lysis_rate_low.pdf')
+plt.clf()
+
+plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# plt.title('Phages')
+plt.ylabel(r'Distance [$\mu$m]')
+plt.xlabel('Time [s]')
+# plt.show()
+plt.savefig(str(base_path) + '/figures/phages_lysis_rate_low.pdf')
+plt.clf()
+
+plt.imshow(np.log(Lresults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
+# plt.title('Infected bacteria')
+plt.ylabel(r'Distance [$\mu$m]')
+plt.xlabel('Time [s]')
+# plt.show()
+plt.savefig(str(base_path) + '/figures/inf_bacteria_lysis_rate_low.pdf')
+plt.clf()
 

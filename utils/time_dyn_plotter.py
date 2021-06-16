@@ -76,7 +76,7 @@ plt.imshow(np.log(Bresults), cmap='viridis', aspect='auto', extent=[0, 1000, 100
 plt.ylabel(r'Distance [$\mu$m]')
 plt.xlabel('Time [s]')
 # plt.show()
-plt.savefig(str(base_path) + '/figures/bacteria_lysis_rate_high.pdf')
+plt.savefig(str(base_path) + '/figures/bacteria_phage_abs_rate_high.pdf')
 plt.clf()
 
 plt.imshow(np.log(Presults), cmap='viridis', aspect='auto', extent=[0, 1000, 1000, 0])
